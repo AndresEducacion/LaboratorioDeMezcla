@@ -1,5 +1,13 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Laboratorio de mezcla</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Laboratorio de mezcla</title><meta name="description" content="Laboratorio interactivo de mezcla: cadena de audio, reverb, filtros, dinámica y más, con demos sonoras.">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+.skip{position:absolute;left:8px;top:-60px;z-index:200;background:var(--amb);color:var(--onamb);padding:8px 14px;border-radius:8px;font-weight:600;text-decoration:none}
+.skip:focus{top:8px}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+main:focus{outline:none}
+.vol input,.ctl input{min-height:24px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
 :root{--bg:#F5F2EA;--fg:#1A1F2C;--mut:#59627A;--card:#FFFFFF;--soft:#ECE7DA;--line:#D9D3C4;--amb:#B86A00;--teal:#0B8577;--red:#C2362F;--onamb:#FFFFFF}
@@ -88,16 +96,18 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 .viewer.full .frame{width:min(100vw,calc((100vh - 64px) * 16 / 9));margin:auto}
 .viewer.full .vnotes{display:none}
 </style>
+</head><body>
+<a class="skip" href="#main">Saltar al contenido</a>
 
 <header class="top"><div class="wrap">
 <span class="brand">UT 2 · LAB</span>
-<nav>
+<nav aria-label="Secciones">
 <a href="#s-cadena">Cadena</a><a href="#s-digital">Digital</a><a href="#s-espacio">Reverb y delay</a><a href="#s-freq">Filtros y EQ</a><a href="#s-dina">Dinámica</a><a href="#s-mod">Modulación</a><a href="#s-amp">Amplificador</a><a href="#s-alt">Altavoces</a><a href="#s-mezcla">Mezcla</a><a href="#s-recetas">Recetas</a><a href="#s-pres">Presentación</a>
 </nav>
 <label class="vol">Volumen <input id="vol" type="range" min="0" max="1" step="0.01" value="0.6" aria-label="Volumen general"></label>
 </div></header>
 
-<main>
+<main id="main" tabindex="-1">
 <div class="wrap hero">
 <p class="eyebrow">UT 2 · Realización y control de la mezcla</p>
 <h1>Laboratorio de mezcla</h1>
@@ -110,15 +120,15 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 <h2>La señal viaja por una cadena</h2>
 <p class="lead">Del micrófono al oído, la señal cambia de nivel y de forma. Toca cada eslabón para ver qué hace y con qué nivel trabaja.</p>
 <div class="stages" id="chain-stages"></div>
-<div class="lab"><div class="vis"><canvas id="chain-cv"></canvas></div><div class="side"><p class="info" id="chain-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="chain-cv"></canvas></div><div class="side"><p class="info" aria-live="polite" id="chain-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-digital"><div class="wrap">
 <p class="eyebrow">02 · Mesa digital</p>
 <h2>Convertir sonido en números</h2>
 <p class="lead">El conversor AD toma muestras (frecuencia de muestreo) y las redondea a un número de niveles (bits). Si muestreas demasiado despacio, aparecen frecuencias que no existían.</p>
-<div class="lab"><div class="vis"><canvas id="dg-cv"></canvas></div><div class="side">
-<div id="dg-ctl" class="ctls"></div><div class="row"><button class="b play" id="dg-play">▶ Escuchar lo que reconstruye</button></div><p class="info" id="dg-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="dg-cv"></canvas></div><div class="side">
+<div id="dg-ctl" class="ctls"></div><div class="row"><button class="b play" id="dg-play">▶ Escuchar lo que reconstruye</button></div><p class="info" aria-live="polite" id="dg-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-espacio"><div class="wrap">
@@ -126,23 +136,23 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 <h2>Reverb y delay</h2>
 <p class="lead">Ambos copian el sonido y lo retrasan. El delay lo repite de forma nítida; la reverb lo difumina en miles de reflexiones.</p>
 <h3 class="sub">Reverb</h3>
-<div class="lab"><div class="vis"><canvas id="rv-cv"></canvas></div><div class="side">
-<div id="rv-ctl" class="ctls"></div><div class="row"><button class="b play" id="rv-play">▶ Escuchar</button></div><p class="info" id="rv-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="rv-cv"></canvas></div><div class="side">
+<div id="rv-ctl" class="ctls"></div><div class="row"><button class="b play" id="rv-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="rv-info"></p></div></div>
 <h3 class="sub">Delay y eco</h3>
-<div class="lab"><div class="vis"><canvas id="dl-cv"></canvas></div><div class="side">
-<div id="dl-ctl" class="ctls"></div><div class="row"><button class="b play" id="dl-play">▶ Escuchar</button></div><p class="info" id="dl-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="dl-cv"></canvas></div><div class="side">
+<div id="dl-ctl" class="ctls"></div><div class="row"><button class="b play" id="dl-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="dl-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-freq"><div class="wrap">
 <p class="eyebrow">04 · Procesadores de frecuencia</p>
 <h2>Filtros y ecualizador</h2>
 <p class="lead">Un filtro deja pasar unas frecuencias y atenúa otras. El ecualizador es un filtro con ganancia: sube o baja una zona del espectro. La curva es la respuesta real del filtro; el relleno, el espectro del sonido.</p>
-<div class="lab"><div class="vis"><canvas id="eq-cv"></canvas></div><div class="side">
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="eq-cv"></canvas></div><div class="side">
 <p class="cap">Ajustes rápidos</p><div id="eq-pre"></div>
-<div id="eq-ctl" class="ctls"></div><div class="row"><button class="b play" id="eq-play">▶ Escuchar</button></div><p class="info" id="eq-info"></p></div></div>
+<div id="eq-ctl" class="ctls"></div><div class="row"><button class="b play" id="eq-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="eq-info"></p></div></div>
 <h3 class="sub">Enmascaramiento</h3>
 <p class="lead">Dos sonidos que ocupan la misma zona se tapan entre sí. Mueve el bajo y mira cuánto se pisa con el bombo; después abre un «hueco» con el ecualizador.</p>
-<div class="lab"><div class="vis"><canvas id="mk-cv"></canvas></div><div class="side"><div id="mk-ctl" class="ctls"></div><p class="info" id="mk-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="mk-cv"></canvas></div><div class="side"><div id="mk-ctl" class="ctls"></div><p class="info" aria-live="polite" id="mk-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-dina"><div class="wrap">
@@ -150,11 +160,11 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 <h2>Compresor, expansor y puerta</h2>
 <p class="lead">La dinámica es la diferencia entre lo más fuerte y lo más suave. El compresor recorta lo que supera el umbral; la puerta cierra el paso a lo que no lo alcanza.</p>
 <h3 class="sub">Compresor</h3>
-<div class="lab"><div class="vis"><canvas id="cp-cv1"></canvas><div style="height:12px"></div><canvas id="cp-cv2"></canvas></div><div class="side">
-<div id="cp-ctl" class="ctls"></div><div class="row"><button class="b play" id="cp-play">▶ Escuchar</button><span id="cp-gr" class="chip" style="cursor:default">Reducción: 0 dB</span></div><p class="info" id="cp-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="cp-cv1"></canvas><div style="height:12px"></div><canvas role="img" aria-label="Gráfico interactivo de la demo" id="cp-cv2"></canvas></div><div class="side">
+<div id="cp-ctl" class="ctls"></div><div class="row"><button class="b play" id="cp-play">▶ Escuchar</button><span id="cp-gr" class="chip" style="cursor:default">Reducción: 0 dB</span></div><p class="info" aria-live="polite" id="cp-info"></p></div></div>
 <h3 class="sub">Puerta de ruido</h3>
-<div class="lab"><div class="vis"><canvas id="gt-cv"></canvas></div><div class="side">
-<div id="gt-ctl" class="ctls"></div><div class="row"><button class="b play" id="gt-play">▶ Escuchar</button><span id="gt-st" class="chip" style="cursor:default">Cerrada</span></div><p class="info" id="gt-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="gt-cv"></canvas></div><div class="side">
+<div id="gt-ctl" class="ctls"></div><div class="row"><button class="b play" id="gt-play">▶ Escuchar</button><span id="gt-st" class="chip" style="cursor:default">Cerrada</span></div><p class="info" aria-live="polite" id="gt-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-mod"><div class="wrap">
@@ -162,33 +172,33 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 <h2>Un oscilador lento que mueve algo</h2>
 <p class="lead">Todos los efectos de modulación usan un LFO (oscilador de baja frecuencia) que mueve un parámetro: el volumen, el retardo o la fase. Cambia qué se mueve y cambia el efecto.</p>
 <div id="md-tabs" style="margin-bottom:12px"></div>
-<div class="lab"><div class="vis"><canvas id="md-cv"></canvas></div><div class="side">
-<div id="md-ctl" class="ctls"></div><div class="row"><button class="b play" id="md-play">▶ Escuchar</button></div><p class="info" id="md-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="md-cv"></canvas></div><div class="side">
+<div id="md-ctl" class="ctls"></div><div class="row"><button class="b play" id="md-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="md-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-amp"><div class="wrap">
 <p class="eyebrow">07 · Amplificadores</p>
 <h2>Hacer grande una señal pequeña</h2>
 <p class="lead">El amplificador multiplica la tensión de la señal para mover los altavoces. Mientras sobre margen, la forma de onda se conserva; si se pide más de lo que puede dar, se recorta y distorsiona.</p>
-<div class="lab"><div class="vis"><canvas id="am-cv"></canvas></div><div class="side">
-<div id="am-ctl" class="ctls"></div><div class="row"><button class="b play" id="am-play">▶ Escuchar</button></div><p class="info" id="am-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="am-cv"></canvas></div><div class="side">
+<div id="am-ctl" class="ctls"></div><div class="row"><button class="b play" id="am-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="am-info"></p></div></div>
 <h3 class="sub">Impedancia, potencia y factor de amortiguamiento</h3>
-<div class="lab"><div class="vis"><canvas id="df-cv" style="aspect-ratio:2/1"></canvas></div><div class="side">
-<div id="df-ctl" class="ctls"></div><p class="info" id="df-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="df-cv" style="aspect-ratio:2/1"></canvas></div><div class="side">
+<div id="df-ctl" class="ctls"></div><p class="info" aria-live="polite" id="df-info"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-alt"><div class="wrap">
 <p class="eyebrow">08 · Altavoces</p>
 <h2>De la corriente al movimiento del aire</h2>
 <p class="lead">Una bobina dentro de un imán empuja un cono. Un solo altavoz no cubre todo el espectro, así que un divisor de frecuencias reparte cada zona a su transductor.</p>
-<div class="lab"><div class="vis"><canvas id="sp-cv"></canvas></div><div class="side">
-<div id="sp-ctl" class="ctls"></div><div class="row"><button class="b play" id="sp-play">▶ Escuchar el tono</button></div><p class="info" id="sp-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="sp-cv"></canvas></div><div class="side">
+<div id="sp-ctl" class="ctls"></div><div class="row"><button class="b play" id="sp-play">▶ Escuchar el tono</button></div><p class="info" aria-live="polite" id="sp-info"></p></div></div>
 <h3 class="sub">Divisor de frecuencias (crossover) de 3 vías</h3>
-<div class="lab"><div class="vis"><canvas id="xo-cv"></canvas></div><div class="side">
-<div id="xo-ctl" class="ctls"></div><p class="cap">Vías activas</p><div id="xo-bands"></div><div class="row"><button class="b play" id="xo-play">▶ Escuchar</button></div><p class="info" id="xo-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="xo-cv"></canvas></div><div class="side">
+<div id="xo-ctl" class="ctls"></div><p class="cap">Vías activas</p><div id="xo-bands"></div><div class="row"><button class="b play" id="xo-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="xo-info"></p></div></div>
 <h3 class="sub">Encendido y apagado: ¿en qué orden?</h3>
 <p class="lead">Un orden equivocado genera un «pop» que puede dañar los altavoces. Pulsa los equipos en el orden correcto.</p>
-<div class="row" id="pw-mode"></div><div class="game" id="pw-game"></div><p class="msg" id="pw-msg"></p>
+<div class="row" id="pw-mode"></div><div class="game" id="pw-game"></div><p class="msg" role="status" id="pw-msg"></p>
 </div></section>
 
 <section class="sec" id="s-mezcla"><div class="wrap">
@@ -197,11 +207,11 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 <p class="lead">Mezclar es repartir los instrumentos en tres ejes: izquierda-derecha (panorama), cerca-lejos (volumen y reverb) y grave-agudo (ecualización). Seis elementos guían el resultado.</p>
 <div class="cards" id="six"></div>
 <h3 class="sub">Panorama: por nivel o por tiempo (Haas)</h3>
-<div class="lab"><div class="vis"><canvas id="pn-cv"></canvas></div><div class="side">
-<div id="pn-ctl" class="ctls"></div><div class="row"><button class="b play" id="pn-play">▶ Escuchar</button></div><p class="info" id="pn-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="pn-cv"></canvas></div><div class="side">
+<div id="pn-ctl" class="ctls"></div><div class="row"><button class="b play" id="pn-play">▶ Escuchar</button></div><p class="info" aria-live="polite" id="pn-info"></p></div></div>
 <h3 class="sub">Mesa de mezclas de cinco pistas</h3>
 <p class="lead">Cada pista está colocada según su panorama (horizontal), su zona de frecuencias (vertical) y su volumen (tamaño). Mezcla tocando los controles; prueba el solo y comprueba que sola suena bien pero en conjunto no.</p>
-<div class="lab"><div class="vis"><canvas id="mx-cv" style="aspect-ratio:1.4/1"></canvas></div><div class="side"><div class="row"><button class="b play" id="mx-play">▶ Escuchar</button><button class="b" id="mx-reset">Restablecer</button></div><p class="info" id="mx-info"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="mx-cv" style="aspect-ratio:1.4/1"></canvas></div><div class="side"><div class="row"><button class="b play" id="mx-play">▶ Escuchar</button><button class="b" id="mx-reset">Restablecer</button></div><p class="info" aria-live="polite" id="mx-info"></p></div></div>
 <div class="strips" id="mx-strips" style="margin-top:10px"></div>
 </div></section>
 
@@ -210,7 +220,7 @@ footer{padding-block:40px 60px;border-top:1px solid var(--line);color:var(--mut)
 <h2>Dónde vive cada instrumento</h2>
 <p class="lead">Elige un instrumento y mira en el espectro dónde se refuerza, dónde se recorta y qué buscar en cada zona.</p>
 <div id="rc-tabs" style="margin-bottom:12px"></div>
-<div class="lab"><div class="vis"><canvas id="rc-cv"></canvas></div><div class="side"><p class="info" id="rc-info" style="min-height:10em"></p></div></div>
+<div class="lab"><div class="vis"><canvas role="img" aria-label="Gráfico interactivo de la demo" id="rc-cv"></canvas></div><div class="side"><p class="info" aria-live="polite" id="rc-info" style="min-height:10em"></p></div></div>
 </div></section>
 
 <section class="sec" id="s-pres"><div class="wrap">
@@ -846,5 +856,4 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(renderAll);
  go(0);
 })();
 </script>
-
 </body></html>
